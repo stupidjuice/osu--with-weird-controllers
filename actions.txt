@@ -1,0 +1,9 @@
+#can you tell that these controls were made for osu!?
+MOUSE_UP
+MOUSE_DOWN
+MOUSE_LEFT
+MOUSE_RIGHT
+
+MOUSE_LCLICK
+KEY_Z
+KEY_X
