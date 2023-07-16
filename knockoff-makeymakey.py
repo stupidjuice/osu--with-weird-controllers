@@ -2,6 +2,7 @@ import tkinter as tker
 import cv2
 import numpy as np
 import osuinput
+import actions
 from time import sleep
 
 #parameters (did i spell that right?)
@@ -98,6 +99,12 @@ while(True):
         
         if currentAverage > threshold:
             print("Exceeded threshold, executing: " + i[3])
+
+            event = i[3]
+            if event in actions.mouseMovementEvents:
+                osuinput.mouseMovementEvent(event)
+            elif event in actions.clickEvents:
+                osuinput.mouseClickEvent(event)
             
     #-----------------------------------------------------------------
 
