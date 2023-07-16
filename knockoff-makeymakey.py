@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import osuinput
 import actions
+import saveload
 from time import sleep
 
 #parameters (did i spell that right?)
@@ -18,12 +19,16 @@ boxes = []
 inprogressBox = []
 colormodeToInt = { "RED": 2, "GREEN": 1, "BLUE": 0 }
 
+def loadBoxes():
+    global boxes
+    boxes = saveload.readBoxes()
+
 #ui
 root = tker.Tk()
 root.geometry("320x240")
 root.title("options")
-tker.Button(root, text="Save boxes").pack()
-tker.Button(root, text="Load boxes").pack()
+tker.Button(root, text="Save boxes", command=lambda:saveload.saveBoxes(boxes)).pack()
+tker.Button(root, text="Load boxes", command=lambda:loadBoxes()).pack()
 tker.Label(root, text="Input the action you want the next box you create\n does (check actions.txt for options)").pack()
 textbox = tker.Text(root, height=1)
 textbox.pack()
@@ -102,14 +107,14 @@ while(True):
 
             event = i[3]
             if event in actions.mouseMovementEvents:
-                osuinput.mouseMovementEvent(event)
+                osuinput.mouseMovementEvent(event, 1)
             elif event in actions.clickEvents:
                 osuinput.mouseClickEvent(event)
             
     #-----------------------------------------------------------------
 
-    cv2.imshow('preview', image)
-    cv2.setMouseCallback('preview', drawBox)
+    cv2.imshow('webcam', image)
+    cv2.setMouseCallback('webcam', drawBox)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
     sleep(0.033)
