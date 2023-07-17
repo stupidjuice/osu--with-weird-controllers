@@ -1,9 +1,8 @@
 import tkinter as tker
 import cv2
-import numpy as np
-import osuinput
-import actions
-import saveload
+import common.osuinput as osuinput
+import common.actions as actions
+import common.saveload as saveload
 from time import sleep
 
 #parameters (did i spell that right?)
