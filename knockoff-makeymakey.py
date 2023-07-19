@@ -55,7 +55,8 @@ def drawBox(event, x, y, flags, params):
         releaseClickPt = [x, y]
         if firstClickPt[0] == releaseClickPt[0] or firstClickPt[1] == releaseClickPt[1]:
             return
-        boxes.append([firstClickPt, releaseClickPt, 0, textbox.get("1.0", "end-1c")])
+        #format: [corner 1,  corner 2,  average color,  action,  is currently being pressed? (only used for click events), trigger when above threshold?]
+        boxes.append([firstClickPt, releaseClickPt, 0, textbox.get("1.0", "end-1c"), False, True])
         print(boxes)
 
 while(True):
@@ -101,14 +102,27 @@ while(True):
         currentAverage /= xrange * yrange
         i[2] = currentAverage
         
-        if currentAverage > threshold:
-            print("Exceeded threshold, executing: " + i[3])
-
+        #this checks if the box average color is above or below the threshold depending on what is requested
+        if (i[5] and currentAverage > threshold) or (not i[5] and currentAverage < threshold):
             event = i[3]
             if event in actions.mouseMovementEvents:
                 osuinput.mouseMovementEvent(event, 1)
             elif event in actions.clickEvents:
-                osuinput.mouseClickEvent(event)
+                #only send the click event if a click action is not currently happening to avoid spam clicks
+                if not i[4]:
+                    print("Exceeded threshold, executing: " + i[3])
+                    osuinput.mouseClickEvent(event)
+                i[4] = True
+        else:
+            event = i[3]
+            
+            if i[4]:
+                print("not")
+                if event in actions.clickEvents:
+                    #release the click
+                    i[4] = False
+                    osuinput.mouseReleaseEvent(event)
+        osuinput.spamClicks()
             
     #-----------------------------------------------------------------
 
