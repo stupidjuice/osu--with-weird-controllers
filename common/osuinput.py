@@ -27,7 +27,8 @@ def mouseReleaseEvent(event):
 def spamClicks():
     for i in currentHeld:
         button = clickDict[i]
-        if button == 0:
-            mouseController.click(pnp.mouse.Button.left)
-        else:
-            keyboardController.press(button)
+        if currentHeld[i]:
+            if button == 0:
+                mouseController.click(pnp.mouse.Button.left)
+            else:
+                keyboardController.press(button)
